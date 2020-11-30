@@ -1,6 +1,4 @@
 #include "longmulti.h"
-#include <iostream>
-using namespace std;
 
 int* longMulti(int* a, int* b, int n) {
     int* res = new int[2*n];
