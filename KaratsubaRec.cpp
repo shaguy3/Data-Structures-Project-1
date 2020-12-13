@@ -20,7 +20,7 @@ void karatsubaRec(int* x, int* y, int n, int** c)
 		{
 			t[i] = (*c)[i - 2];
 		}
-		//delete[] * c;
+		delete[] * c;
 		*c = t;
 	}
 	int* p1 = new int[n]; //a*c
@@ -67,11 +67,11 @@ void karatsubaRec(int* x, int* y, int n, int** c)
 	shiftLeft(p3, *c, s2, 2 * n, n / 2);//put p3 in correct place of c
 	fixDigits(*c, 2 * n);//correct the array so each place has a single digit
 
-	//delete[] p1;
-	//delete[] p2;
-	//delete[] p3;
-	//delete[] aSb;
-	//delete[] cSd;
+	delete[] p1;
+	delete[] p2;
+	delete[] p3;
+	delete[] aSb;
+	delete[] cSd;
 }
 
 
@@ -107,7 +107,7 @@ void subtract(int** a, int* b, int na, int nb)
 		res[na-1] += (*a)[na-1] - b[i];
 		na--;
 	}
-	//	delete[] * a;
+		delete[] * a;
 	*a = res;
 }
 
@@ -119,7 +119,7 @@ void addZeroes(int** a, int n)
 	{
 		res[i] = (*a)[i - 1];
 	}
-	//	delete[] * a;
+		delete[] * a;
 	*a = res;
 }
 
@@ -158,32 +158,6 @@ void fixDigits(int* c, int n)
 	}
 }
 
-void makeEqual(int** a, int n, int size, int count)
-{
-	int s;
-	if ((n / 2 + 1 - count) % 2 != 0 && (n / 2 + 1 - count) != 1)
-	{
-		s = (n / 2 + 2 - count) * 2;
-	}
-	else
-	{
-		s = (n / 2 + 1 - count) * 2;
-	}
-	int* tmp = new int[s];
-	for (int i = 0; i < s - size; i++)
-	{
-		tmp[i] = 0;
-	}
-	int j = 0;
-	for (int i = s - size; i < s; i++)
-	{
-		tmp[i] = (*a)[j];
-		j++;
-	}
-	//delete[] * a;
-	*a = tmp;
-}
-
 int removeZeroes(int** a, int** b, int n)
 {
 	int i = 0;
@@ -200,8 +174,8 @@ int removeZeroes(int** a, int** b, int n)
 		t2[j] = (*b)[i];
 		i++;
 	}
-	//delete[] * a;
-	//delete[] * b;
+	delete[] * a;
+	delete[] * b;
 	*a = t1;
 	*b = t2;
 	return  s;
