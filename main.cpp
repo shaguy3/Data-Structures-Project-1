@@ -5,20 +5,20 @@ using namespace std;
 int main() {
 
     /* longMulti test: */
-    int n = 4;
+    int n = 5;
     int *a = new int[n]; 
     int *b = new int[n];
     a[0] = 9;
     a[1] = 9;
     a[2] = 9;
     a[3] = 9;
-    //a[4] = 5;
+    a[4] = 9;
     //a[5] = 6;
     b[0] = 9;
     b[1] = 9;
     b[2] = 9;
     b[3] = 9;
-    //b[4] = 5;
+    b[4] = 9;
     //a[5] = 6;
 
     int* res = new int[2 * n];
@@ -36,7 +36,7 @@ int main() {
     {
         j++;
     }
-    for (int i = j; i < 2 * n; i++) {
+    for (int i = j; i < 2*n; i++) {
         cout << res[i] << " ";
     }
 
