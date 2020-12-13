@@ -1,7 +1,7 @@
 #include "karatsubaRec.h"
 void karatsubaRec(int* x, int* y, int n, int** c)
 {
-	if (n == 1 || n==0)
+	if (n == 1 || n == 0)
 	{
 		(*c)[1] += (x[0] * y[0]) % 10;
 		(*c)[0] += (x[0] * y[0]) / 10;
@@ -25,10 +25,10 @@ void karatsubaRec(int* x, int* y, int n, int** c)
 	}
 	int* p1 = new int[n]; //a*c
 	int* p2 = new int[n]; //b*d
-	int* aSb = sum(x, x + n / 2, n / 2);//a+b
-	fixDigits(aSb, n/2+1);
-	int* cSd = sum(y, y + n / 2, n / 2);//c+d
-	fixDigits(cSd, n/2+1);
+	int* aSb = sum(x, x + (n / 2), n / 2);//a+b
+	fixDigits(aSb, n / 2 + 1);
+	int* cSd = sum(y, y + (n / 2), n / 2);//c+d
+	fixDigits(cSd, n / 2 + 1);
 	int count = removeZeroes(&aSb, &cSd, n / 2 + 1);
 	int* p3 = new int[(n / 2 + 1 - count) * 2];//(a+b)*(c+d)
 	for (int m = 0; m < n; m++)
@@ -41,10 +41,10 @@ void karatsubaRec(int* x, int* y, int n, int** c)
 		p3[m] = 0;
 	}
 	karatsubaRec(x, y, n / 2, &p1);//a*c
-	karatsubaRec(x + n / 2, y + n / 2, n / 2, &p2);//b*d
+	karatsubaRec(x + (n / 2), y + (n / 2), n / 2, &p2);//b*d
 	karatsubaRec(aSb, cSd, (n / 2 + 1 - count), &p3);//(a+b)*(c+d)
-	int s1,s2;
-	if (n / 2 % 2 != 0 && n/2 != 1)
+	int s1, s2;
+	if ((n / 2) % 2 != 0 && n / 2 != 1)
 	{
 		s1 = (n / 2 + 1) * 2;
 	}
@@ -62,10 +62,8 @@ void karatsubaRec(int* x, int* y, int n, int** c)
 	}
 	shiftLeft(p1, *c, s1, 2 * n, n);//put p1 in correct place of c
 	shiftLeft(p2, *c, s1, 2 * n, 0);//put p2 in correct place of c
-	makeEqual(&p1, n,s1 ,count);//add one left 0 to p1
-	makeEqual(&p2, n,s1 ,count);//add one left 0 to p1
-	subtract(&p3, p1, s2);//p3-p1
-	subtract(&p3, p2, s2);//(p3-p1)-p2
+	subtract(&p3, p1, s2,s1);//p3-p1
+	subtract(&p3, p2, s2,s1);//(p3-p1)-p2
 	shiftLeft(p3, *c, s2, 2 * n, n / 2);//put p3 in correct place of c
 	fixDigits(*c, 2 * n);//correct the array so each place has a single digit
 
@@ -92,21 +90,22 @@ int* sum(int* a, int* b, int n)
 	return res;
 }
 
-void subtract(int** a, int* b, int n)
+void subtract(int** a, int* b, int na, int nb)
 {
-	int* res = new int[n];
-	for (int i = 0; i < n; i++)
+	int* res = new int[na];
+	for (int i = 0; i < na; i++)
 	{
 		res[i] = 0;
 	}
-	for (int i = n - 1; i >= 0; i--)
+	for (int i = nb - 1; i >= 0; i--)
 	{
-		if ((*a)[i] - b[i] < 0)
+		if ((*a)[na-1] - b[i] < 0)
 		{
-			(*a)[i - 1] -= 1;
-			(*a)[i] += 10;
+			(*a)[na-1 - 1] -= 1;
+			(*a)[na-1] += 10;
 		}
-		res[i] += (*a)[i] - b[i];
+		res[na-1] += (*a)[na-1] - b[i];
+		na--;
 	}
 	//	delete[] * a;
 	*a = res;
@@ -137,10 +136,12 @@ void shiftLeft(int* a, int* c, int na, int nc, int shift)
 	}
 	else
 	{
-		int s = shift + na;
-		for (int i = 0; i < na; i++)
+		int j = 0;
+		int s = nc - 1 - shift;
+		for (int i = na-1; i >= 0; i--)
 		{
-			c[nc - s + i] += a[i];
+			c[s-j] += a[i];
+			j++;
 		}
 	}
 }
@@ -160,7 +161,7 @@ void fixDigits(int* c, int n)
 void makeEqual(int** a, int n, int size, int count)
 {
 	int s;
-	if ((n / 2 + 1 - count)%2!=0&& (n / 2 + 1 - count)!=1)
+	if ((n / 2 + 1 - count) % 2 != 0 && (n / 2 + 1 - count) != 1)
 	{
 		s = (n / 2 + 2 - count) * 2;
 	}
@@ -169,12 +170,12 @@ void makeEqual(int** a, int n, int size, int count)
 		s = (n / 2 + 1 - count) * 2;
 	}
 	int* tmp = new int[s];
-	for (int i = 0; i < s-size; i++)
+	for (int i = 0; i < s - size; i++)
 	{
 		tmp[i] = 0;
 	}
 	int j = 0;
-	for (int i = s-size; i < s; i++)
+	for (int i = s - size; i < s; i++)
 	{
 		tmp[i] = (*a)[j];
 		j++;
