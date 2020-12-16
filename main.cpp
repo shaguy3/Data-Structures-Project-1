@@ -13,8 +13,12 @@ using namespace std;
 
 bool check_input(string& a, string& b, string& n) {
 
-    while (n[0] == ' ' || n[0] == '0') {
+    while (n[0] == ' ') {
         n.erase(0, 1);
+    }
+
+    if (n[0] == '0') {
+        return false;
     }
 
     for (int i = 0; i < n.length(); i++) {
@@ -68,6 +72,7 @@ int main() {
 
         int* res_1 = new int[2 * n];
         int* res_2 = new int[2 * n];
+
         for (int i = 0; i < 2 * n; i++)
         {
             res_1[i] = 0;
